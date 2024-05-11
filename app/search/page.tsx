@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { userSearchSchema } from "@/schemas/userSearch";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -28,14 +29,17 @@ import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { userSearchSchema } from "@/schemas/userSearch";
+import { redirect, useRouter } from "next/navigation";
 
 export default function Home() {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [data, setData] = useState<User[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof userSearchSchema>>({
     resolver: zodResolver(userSearchSchema),
@@ -45,19 +49,27 @@ export default function Home() {
   });
 
   async function onSubmit(values: z.infer<typeof userSearchSchema>) {
-    setIsLoading(true); // Set loading to true during search
-    const searchResults = await fetch(
-      `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/getUsers?username=${values.username}`
-    );
-    const userData = (await searchResults.json()) as User[];
-    console.log(userData);
-
-    setData(userData);
-    setIsLoading(false); // Set loading to false after search
+    // setIsLoading(true); // Set loading to true during search
+    // setSearchQuery(values.username);
+    // fetchData();
+    // Redirect to new page "/search" with search parameter in the URL
+    redirect(`/search?username=${values.username}`);
+    // setIsLoading(false); // Set loading to false after search
   }
 
   const fetchData = async () => {
     setIsLoading(true);
+    // if (searchQuery) {
+    //   const response = await fetch(
+    //     `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/getUsers?username=${searchQuery}`
+    //   );
+    //   const userData = await response.json();
+    //   console.log(userData);
+
+    //   setData(userData);
+    //   setIsLoading(false);
+    //   return;
+    // }
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/getUsers?limit=${limit}&page=${page}`
     );
