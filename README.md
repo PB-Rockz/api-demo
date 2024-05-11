@@ -2,13 +2,13 @@ This is a [Next.js](https://nextjs.org/) Project to demonstrate API Calls
 
 ## Getting Started
 
-Clone this repository using :
+First, clone this repository using :
 
 ```bash
 git clone https://github.com/PB-Rockz/api-demo
 ```
 
-First, run the development server:
+Then, run the development server:
 
 ```bash
 npm run dev
