@@ -1,6 +1,12 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a [Next.js](https://nextjs.org/) Project to demonstrate API Calls
 
 ## Getting Started
+
+Clone this repository using :
+
+```bash
+git clone https://github.com/PB-Rockz/api-demo
+```
 
 First, run the development server:
 
@@ -16,21 +22,36 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+This project is made in Typescript so it is fully typesafe.
 
-## Learn More
+It is also deployed on web, you can check it out [here.](https://api-demo-sigma.vercel.app/)
 
-To learn more about Next.js, take a look at the following resources:
+## Screenshots
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+![App Screenshot](https://imgur.com/0vheThp.jpg)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+![App Screenshot](https://imgur.com/u2nD5nq.jpg)
 
-## Deploy on Vercel
+![App Screenshot](https://imgur.com/iCrmV2C.jpg)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- React App based on modern UI.
+
+- Fully Responsive.
+
+- 100% Type Safe as it is Developed in Typescript.
+
+- Extremely Fast | Time to first byte is just **0.07s**
+
+- Form validation with `zod` to prevent malicious queries.
+
+- Extremely Lightweight.
+
+## Developer
+
+- [@Praful Bansal](https://github.com/PB-Rockz)
+
+For more contact us at react.prodigies@gmail.com
