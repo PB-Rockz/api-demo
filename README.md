@@ -8,7 +8,31 @@ First, clone this repository using :
 git clone https://github.com/PB-Rockz/api-demo
 ```
 
-Then, run the development server:
+Navigate into the repository using :
+
+```bash
+cd .\api-demo\
+```
+
+install the dependencies:
+
+```bash
+npm install
+```
+
+```bash
+yarn add
+```
+
+```bash
+pnpm install
+```
+
+```bash
+bun install
+```
+
+then, run the development server:
 
 ```bash
 npm run dev
