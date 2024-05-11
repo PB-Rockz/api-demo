@@ -27,9 +27,8 @@ import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { set, z } from "zod";
+import { z } from "zod";
 import { userSearchSchema } from "@/schemas/userSearch";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [limit, setLimit] = useState(10);
@@ -77,7 +76,7 @@ export default function Home() {
     setIsLoading(true);
     const response = await fetch(`  /api/getUsers?&username=${searchQuery}`);
     const userData = await response.json();
-    console.log(userData.users);
+    // console.log(userData.users);
     setSearchedData(userData.users);
     setTotalPages(Math.ceil(userData.total / limit));
     setIsLoading(false);
@@ -113,7 +112,7 @@ export default function Home() {
       <div className="w-full ">
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="md:max-w-3xl max-w-2xl mx-auto flex items-center justify-center z-20 my-4 gap-x-4 px-4 md:my-10"
+          className="md:max-w-3xl max-w-2xl mx-auto flex items-center justify-center z-50 my-4 gap-x-4 px-4 md:my-10"
         >
           <Input
             {...form.register("username")}

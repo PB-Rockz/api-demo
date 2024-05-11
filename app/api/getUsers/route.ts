@@ -19,8 +19,8 @@ export async function GET(request: NextRequest) {
             });
 
             const data = await res.json() as UserResult;
-            console.log(searchQuery);
-            console.log(data);
+            // console.log(searchQuery);
+            // console.log(data);
             return Response.json(data);
             
         }
