@@ -39,7 +39,6 @@ export default function Home() {
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof userSearchSchema>>({
     resolver: zodResolver(userSearchSchema),
@@ -61,7 +60,7 @@ export default function Home() {
     // router.push(`/search?username=${values.username}`);
     setSearchQuery(values.username);
     console.log(searchQuery);
-    setPage(1);
+    // setPage(1);
     await fetchSearchData();
   }
 
@@ -111,12 +110,15 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-screen items-center justify-center md:max-w-5xl mx-auto">
-      <div className="w-full flex items-center justify-center z-20 my-4 gap-x-4 px-4 md:my-10">
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+      <div className="w-full ">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="md:max-w-3xl max-w-2xl mx-auto flex items-center justify-center z-20 my-4 gap-x-4 px-4 md:my-10"
+        >
           <Input
             {...form.register("username")}
             placeholder="Search Users ..."
-            className="w-full max-w-2xl"
+            className="md:max-w-3xl max-w-2xl"
           />
           <Button type="submit">Search</Button>
         </form>
@@ -146,7 +148,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="md:mt-16 mt-4 flex flex-col md:flex-row gap-y-5 justify-evenly w-full">
+      <div className="xl:mt-16 mt-4 flex flex-col md:flex-row gap-y-5 justify-evenly w-full">
         <Pagination className="text-white">
           <PaginationContent>
             <PaginationItem>
