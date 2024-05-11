@@ -27,7 +27,7 @@ import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { set, z } from "zod";
 import { userSearchSchema } from "@/schemas/userSearch";
 import { useRouter } from "next/navigation";
 
@@ -35,6 +35,7 @@ export default function Home() {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [data, setData] = useState<User[]>([]);
+  const [searchedData, setSearchedData] = useState<User[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -60,29 +61,36 @@ export default function Home() {
     // router.push(`/search?username=${values.username}`);
     setSearchQuery(values.username);
     console.log(searchQuery);
-    fetchData();
+    setPage(1);
+    await fetchSearchData();
   }
 
   const fetchData = async () => {
     setIsLoading(true);
-    // const response = await fetch(`  /api/getUsers?limit=${limit}&page=${page}`);
-    if (searchQuery) {
-      const response = await fetch(`  /api/getUsers?&username=${searchQuery}`);
-      const userData = await response.json();
-      console.log(userData.users);
-
-      setData(userData.users);
-    }
-    const response = await fetch(`  /api/getUsers?limit=${limit}&page=${page}`);
+    const response = await fetch(`/api/getUsers?limit=${limit}&page=${page}`);
     const userData = await response.json();
     setData(userData.users);
     setTotalPages(Math.ceil(userData.total / limit));
     setIsLoading(false);
   };
 
+  const fetchSearchData = async () => {
+    setIsLoading(true);
+    const response = await fetch(`  /api/getUsers?&username=${searchQuery}`);
+    const userData = await response.json();
+    console.log(userData.users);
+    setSearchedData(userData.users);
+    setTotalPages(Math.ceil(userData.total / limit));
+    setIsLoading(false);
+  };
+
   useEffect(() => {
     fetchData();
-  }, [limit, page, searchQuery]);
+  }, [limit, page]);
+
+  useEffect(() => {
+    fetchSearchData();
+  }, [searchQuery]);
 
   const handleLimitChange = (value: string) => {
     setLimit(parseInt(value));
@@ -120,14 +128,20 @@ export default function Home() {
             {isLoading ? (
               <MobileLoadongTable columns={mobileColumns} data={[]} />
             ) : (
-              <MobileDataTable data={data} columns={mobileColumns} />
+              <MobileDataTable
+                data={searchQuery ? searchedData : data}
+                columns={mobileColumns}
+              />
             )}
           </div>
           <div className="hidden md:inline w-full">
             {isLoading ? (
               <LoadingTable columns={columns} data={[]} />
             ) : (
-              <DataTable columns={columns} data={data} />
+              <DataTable
+                columns={columns}
+                data={searchQuery ? searchedData : data}
+              />
             )}
           </div>
         </div>
