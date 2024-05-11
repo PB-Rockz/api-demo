@@ -29,6 +29,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { userSearchSchema } from "@/schemas/userSearch";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [limit, setLimit] = useState(10);
@@ -36,6 +37,8 @@ export default function Home() {
   const [data, setData] = useState<User[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof userSearchSchema>>({
     resolver: zodResolver(userSearchSchema),
@@ -45,22 +48,32 @@ export default function Home() {
   });
 
   async function onSubmit(values: z.infer<typeof userSearchSchema>) {
-    setIsLoading(true); // Set loading to true during search
-    const searchResults = await fetch(
-      `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/getUsers?username=${values.username}`
-    );
-    const userData = (await searchResults.json()) as User[];
-    console.log(userData);
+    // setIsLoading(true); // Set loading to true during search
+    // const searchResults = await fetch(
+    //   `/api/getUsers?username=${values.username}`
+    // );
+    // const userData = (await searchResults.json()) as User[];
+    // console.log(userData);
 
-    setData(userData);
-    setIsLoading(false); // Set loading to false after search
+    // setData(userData);
+    // setIsLoading(false); // Set loading to false after search
+    // router.push(`/search?username=${values.username}`);
+    setSearchQuery(values.username);
+    console.log(searchQuery);
+    fetchData();
   }
 
   const fetchData = async () => {
     setIsLoading(true);
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/getUsers?limit=${limit}&page=${page}`
-    );
+    // const response = await fetch(`  /api/getUsers?limit=${limit}&page=${page}`);
+    if (searchQuery) {
+      const response = await fetch(`  /api/getUsers?&username=${searchQuery}`);
+      const userData = await response.json();
+      console.log(userData.users);
+
+      setData(userData.users);
+    }
+    const response = await fetch(`  /api/getUsers?limit=${limit}&page=${page}`);
     const userData = await response.json();
     setData(userData.users);
     setTotalPages(Math.ceil(userData.total / limit));
@@ -69,7 +82,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchData();
-  }, [limit, page]);
+  }, [limit, page, searchQuery]);
 
   const handleLimitChange = (value: string) => {
     setLimit(parseInt(value));

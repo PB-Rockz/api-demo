@@ -59,20 +59,7 @@ export default function Home() {
 
   const fetchData = async () => {
     setIsLoading(true);
-    // if (searchQuery) {
-    //   const response = await fetch(
-    //     `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/getUsers?username=${searchQuery}`
-    //   );
-    //   const userData = await response.json();
-    //   console.log(userData);
-
-    //   setData(userData);
-    //   setIsLoading(false);
-    //   return;
-    // }
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/getUsers?limit=${limit}&page=${page}`
-    );
+    const response = await fetch(`/api/getUsers?username=${searchQuery}`);
     const userData = await response.json();
     setData(userData.users);
     setTotalPages(Math.ceil(userData.total / limit));
