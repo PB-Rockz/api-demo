@@ -29,6 +29,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { userSearchSchema } from "@/schemas/userSearch";
+import { useRouter } from "next/navigation";
+import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 
 export default function Home() {
   const [limit, setLimit] = useState(10);
@@ -38,6 +40,7 @@ export default function Home() {
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof userSearchSchema>>({
     resolver: zodResolver(userSearchSchema),
@@ -58,8 +61,7 @@ export default function Home() {
     // setIsLoading(false); // Set loading to false after search
     // router.push(`/search?username=${values.username}`);
     setSearchQuery(values.username);
-    console.log(searchQuery);
-    // setPage(1);
+    // console.log(searchQuery);
     await fetchSearchData();
   }
 
@@ -110,17 +112,28 @@ export default function Home() {
   return (
     <div className="flex flex-col h-screen items-center justify-center md:max-w-5xl mx-auto">
       <div className="w-full ">
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="md:max-w-3xl max-w-2xl mx-auto flex items-center justify-center z-50 my-4 gap-x-4 px-4 md:my-10"
-        >
-          <Input
-            {...form.register("username")}
-            placeholder="Search Users ..."
-            className="md:max-w-3xl max-w-2xl"
-          />
-          <Button type="submit">Search</Button>
-        </form>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="md:max-w-3xl max-w-2xl mx-auto flex items-center justify-center z-50 my-4 gap-x-4 px-4 md:my-10"
+          >
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <Input
+                    {...field}
+                    placeholder="Search Users ..."
+                    className="md:max-w-3xl max-w-2xl"
+                  />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit">Search</Button>
+          </form>
+        </Form>
       </div>
       <div className=" w-full relative px-4 ">
         <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-500 to-teal-500 transform scale-[0.9] bg-red-500 rounded-full blur-3xl" />
